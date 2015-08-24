@@ -1,0 +1,153 @@
+$white: #fff;
+
+$main1: #62688f;
+$main2: #8a92b2;
+$main3: #e2e4ec;
+
+$dark: #353535;
+$dark2: #575757;
+
+$grey: #888;
+
+$red: #e23d24;
+$yellow: #f0a800;
+$green: #67a029;
+
+#web3Inspector {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex: 1;
+  min-height: 400px;
+  position: fixed;
+  width: 100%;
+  bottom: -400px;
+  transition: bottom 0.6s;
+  
+
+  fieldset { 
+    border: 1px solid $main3; 
+  } 
+  
+  &.active {
+    bottom: 0px;
+  }
+  
+  .mainView {
+    flex: 8;
+  }
+  
+  .contractView, .abiView, .abiInspector {
+    display: flex;
+  }
+  .contractView {
+    flex-direction: column;
+  }
+  
+  .abiSelect {
+    flex: 1;
+  }
+
+  .abiView {
+    flex: 4;
+  }
+  
+  .abiInspector {
+    flex: 8;
+  }
+  .contractStatus {
+    flex: 1;
+    border-top: 1px solid $dark;
+    border-bottom: 1px solid $main3;
+    padding: 6px 15px;
+    
+  }
+  .activeToggle {
+    position: absolute;
+    top: -40px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-top: 1px solid #333;
+    background: url(/ethereum-logo.png) center center no-repeat;
+    background-size: contain;
+    border-radius: 6px 6px 0 0;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+  }
+  
+  .navigation {
+    background: $dark;
+    color: $white;
+    min-width: 10%;
+    position: relative;
+
+    .web3Settings {
+      width: 100%;
+      height: 30px;
+      position: absolute;
+      bottom: 0px;
+    }
+
+    .contractsNavigation {
+      width: 100%;
+    }
+    
+    .navBtn {
+      padding: 6px 15px;
+      font-size: 12px;
+      font-weight: 200;
+      letter-spacing: 1px;
+        
+      &.selected {
+        background: rgba($white, 0.1);
+        border-left: 4px solid $main1;
+      }
+    }
+  }
+  
+  .statusIcon {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: #f00;
+    position: absolute;
+    right: 10px;
+    margin-top: 4px;
+    &.green {
+      background: $green;
+    }
+  }
+
+  .abiSelect {
+    width: 20%;
+
+    .abiSmall {
+      background: $white;
+      padding: 10px;
+      font-weight: 400;
+      position: relative;
+      &:before {
+        content: " ";
+        border-bottom: 1px solid $main3;
+        display:block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 90%;
+      }
+      &:hover {
+        background: $main3;
+      }
+      &.selected {
+        border-left: 4px solid $main1;
+        background: $main3;
+      }
+    }
+  }
+
+  .abiView {
+    padding: 15px;
+    border-left: 1px solid $main3;
+    
+  }
+}
