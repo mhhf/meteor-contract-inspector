@@ -81,35 +81,42 @@ Web3Inspector = React.createClass({
   }
 });
 
-Meteor.startup(function () {
-  
-  let host = Meteor.settings.public.web3.rpc.host;
-  let port = Meteor.settings.public.web3.rpc.port;
+ContractInspector = {
+  init ( options ) {
+    
+    web3.setProvider( new web3.providers.HttpProvider( options.httpProvider ) );
 
-  web3.setProvider( new web3.providers.HttpProvider(`http://${host}:${port}`) );
+    // web3.currentProvider.send({jsonrpc: "2.0", method: "evm_reset", params: [], id: 1});
+    web3.eth.defaultAccount = web3.eth.coinbase;
 
-  // web3.currentProvider.send({jsonrpc: "2.0", method: "evm_reset", params: [], id: 1});
-  web3.eth.defaultAccount = web3.eth.coinbase;
 
-  // TODO - refactor this
-  var rdyCounter = 0;
-  
-  _.each(Contracts, ( Contract, name ) => {
-  
-    var C = web3.eth.contract( Contract.abi );
-    c = C.new( {from: web3.eth.coinbase, data: Contract.binary }, function( err, con ){
-      if( !con.address ) return null;
-      Contract.instance = con;
-      
-      // Render after every contract has been initialized
-      if ( ++rdyCounter == _.keys(Contracts).length ) {
-        $('body').append('<div id="web3Inspector-wrapper"></div>');
-        React.render(<Web3Inspector />, document.getElementById("web3Inspector-wrapper"));
-      }
-      
+    var initContractInspector = function() {
+      $('body').append('<div id="web3Inspector-wrapper"></div>');
+      React.render(<Web3Inspector />, document.getElementById("web3Inspector-wrapper"));
+    }
+
+    // TODO - refactor this
+    var rdyCounter = 0;
+    
+    _.each(Contracts, ( Contract, name ) => {
+    
+      var C = web3.eth.contract( Contract.abi );
+      c = C.new( {from: web3.eth.coinbase, data: Contract.binary }, function( err, con ){
+        if( !con.address ) return null;
+        Contract.instance = con;
+        
+        // Render after every contract has been initialized
+        if ( ++rdyCounter == _.keys(Contracts).length ) {
+          if ( options.contractSetup && typeof options.contractSetup === "function" ) {
+            options.contractSetup ( () => {
+              initContractInspector();
+            });
+          } else {
+            initContractInspector();
+          }
+        }
+        
+      });
     });
-  });
-
-});
-
-
+  }
+}
