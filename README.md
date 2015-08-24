@@ -13,7 +13,11 @@ Version: 0.1.0-4a1fcfac/Release-Darwin/clang/int
 
 Make sure you have an ethereum rpc client running in the background ( [TestRPC](https://github.com/ConsenSys/eth-testrpc) is recomended )
 
-Install this package: `meteor add napsy:contract-inspector`
+Install this packages: 
+```
+meteor add napsy:solidity
+meteor add napsy:contract-inspector
+```
 
 ## Usage
 **Use this package only in development.**
