@@ -13,10 +13,10 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.3');
   
-  api.use('react');
-  api.use('napsy:solidity');
-  api.use('fourseven:scss');
-  api.use('ethereum:web3');
+  api.use('react@0.1.7');
+  api.use('napsy:solidity@0.1.2');
+  api.use('fourseven:scss@3.2.0');
+  api.use('ethereum:web3@0.12.2');
 
   api.addFiles('abi.jsx', ['client']);
   api.addFiles('app.jsx', ['client']);
