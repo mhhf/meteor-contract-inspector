@@ -89,7 +89,6 @@ ContractInspector = {
     // web3.currentProvider.send({jsonrpc: "2.0", method: "evm_reset", params: [], id: 1});
     web3.eth.defaultAccount = web3.eth.coinbase;
 
-
     var initContractInspector = function() {
       $('body').append('<div id="web3Inspector-wrapper"></div>');
       React.render(<Web3Inspector />, document.getElementById("web3Inspector-wrapper"));

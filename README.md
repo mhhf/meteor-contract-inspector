@@ -1,10 +1,23 @@
 # Contract Inspector
-This package allows you to inspect and manipulate your contracts trough their abi.
+This package allows you to inspect and manipulate the state of your contracts in your browser.
 
 ![](img.png)
 
+## Installation
+Make sure you have the [Solidity Compiler](https://github.com/ethereum/cpp-ethereum) up and running:
+```
+$ solc --version
+solc, the solidity compiler commandline interface
+Version: 0.1.0-4a1fcfac/Release-Darwin/clang/int
+```
+
+Make sure you have an ethereum rpc client running in the background ( [TestRPC](https://github.com/ConsenSys/eth-testrpc) is recomended )
+
+Install this package: `meteor add napsy:contract-inspector`
+
 ## Usage
-Use this package only in development.
+**Use this package only in development.**
+[]()
 
 if a contractSetup function is provided, the inspector will be initialized after,
 every contract has been set up and a callback is called:
