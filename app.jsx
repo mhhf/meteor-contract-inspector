@@ -101,6 +101,7 @@ ContractInspector = {
     
       var C = web3.eth.contract( Contract.abi );
       c = C.new( {from: web3.eth.coinbase, data: Contract.binary }, function( err, con ){
+        if( err ) throw new Error(err);
         if( !con.address ) return null;
         Contract.instance = con;
         
