@@ -1,6 +1,6 @@
 Package.describe({
   name: 'napsy:contract-inspector',
-  version: '0.0.2',
+  version: '0.0.3',
   // Brief, one-line summary of the package.
   summary: 'This package allows you to inspect and manipulate the state of your contracts in your browser.',
   // URL to the Git repository containing the source code for this package.
