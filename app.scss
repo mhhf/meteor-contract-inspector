@@ -21,7 +21,8 @@ $green: #67a029;
   position: fixed;
   width: 100%;
   bottom: -400px;
-  transition: bottom 0.6s;
+  // refactor to bottom 0.6s, box-shadow 0.6s; if scss compiler allows it
+  transition: all 0.6s;
   
   /// FONT
 
@@ -44,16 +45,21 @@ $green: #67a029;
     margin: 10px 0;
     padding: 8px 28px;
     text-transform: uppercase;
-    float: right;
   }
 
   fieldset { 
     border: 1px solid $main3; 
-    clear: both;
   } 
+  
+  input {
+    padding: 6px 10px;
+  }
   
   &.active {
     bottom: 0px;
+    -webkit-box-shadow: 0px -2px 13px -1px rgba(0,0,0,0.45);
+    -moz-box-shadow: 0px -2px 13px -1px rgba(0,0,0,0.45);
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.45);
   }
   
   .mainView {
@@ -69,6 +75,33 @@ $green: #67a029;
   
   .abiView {
     flex: 4;
+    padding: 15px;
+    border-left: 1px solid $main3;
+    > div {
+      width: 100%;
+      
+      table {
+        width: 100%;
+        td {
+          margin: 6px 0;
+        }
+        td.input {
+          display: flex;
+          > input {
+            flex: 1;
+          }
+        }
+        td.label {
+          text-align: right;
+          padding-right: 10px;
+          width: 18%;
+        }
+        td.type {
+          padding-left: 4px;
+          width: 15%;
+        }
+      }
+    }
   }
   
   .abiInspector {
@@ -187,9 +220,4 @@ $green: #67a029;
     }
   }
 
-  .abiView {
-    padding: 15px;
-    border-left: 1px solid $main3;
-    
-  }
 }

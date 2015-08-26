@@ -14,7 +14,7 @@ ABIView = React.createClass({
       && this.props.natspecdev.params 
       && this.props.natspecdev.params[ input.name ];
 
-      return <div><tr key={i}> <td> <label> {input.name || input.type}</label></td><td> <input type="text" ref={i} /> </td><td> ::{input.type} </td> </tr><tr><td colspan="3"><span className="explainer">{notice}</span></td></tr></div>;
+      return <div><tr key={i}> <td className="label"> <label> {input.name || input.type}</label></td><td className="input"> <input type="text" ref={i} /> </td><td className="type"> :: {input.type} </td> </tr><tr><td></td><td colSpan="2"><span className="explainer">{notice}</span></td></tr></div>;
     });
 
     
@@ -22,7 +22,7 @@ ABIView = React.createClass({
       return (
       <form ref="form">
         <fieldset>
-          <legend>{this.props.name}</legend>
+          <legend>Input</legend>
           <table>
             <tbody>
               {inputs}
@@ -44,13 +44,13 @@ ABIView = React.createClass({
       
       
       return <tr key={i}>
-        <td>
+        <td className="label">
           <label> {output.name || output.type}</label>
         </td>
-        <td> 
+        <td className="input"> 
           <input disabled type="text" value={ this.props.outputs.length > 1 && this.state.result && this.state.result[i] || this.state.result } />
         </td>
-        <td>::{output.type}</td>
+        <td className="type">:: {output.type}</td>
       </tr>;
     });
     
