@@ -38,7 +38,7 @@ Web3Inspector = React.createClass({
     } else {
       var contract = Contracts[this.state.selected];
       if ( contract == null ) throw Error("no contract under this name found");
-      return <Contract key={this.state.selected} {...contract} />;
+      return <Contract key={this.state.selected} {...contract} name={this.state.selected} />;
     }
   },
 

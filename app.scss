@@ -36,7 +36,7 @@ $green: #67a029;
 
   
   button {
-    border: 1px solid $dark;
+    border: 1px solid $main2;
     background: $main1;
     color: $white;
     border-radius: 2px;
@@ -67,10 +67,6 @@ $green: #67a029;
     flex-direction: column;
   }
   
-  .abiSelect {
-    flex: 1;
-  }
-
   .abiView {
     flex: 4;
   }
@@ -143,7 +139,29 @@ $green: #67a029;
   }
 
   .abiSelect {
+    flex: 1;
     width: 20%;
+    height: 400px;
+    overflow: scroll;
+    
+    .contractInfo {
+      background-color: $dark;
+      color: #fff;
+      height: 32px;
+      font-size: 18px;
+      line-height: 32px;
+      font-weight: 100;
+      letter-spacing: 1px;
+      padding: 10px;
+      &:hover {
+        background-color: $dark2;
+      }
+      
+      &.selected {
+        border-left: 4px solid $main1;
+        background: $dark2;
+      }
+    }
 
     .abiSmall {
       background: $white;

@@ -1,26 +1,3 @@
-ABISelect = React.createClass({
-  
-  render () {
-    
-    var classes = React.addons.classSet({
-      abiSmall: true,
-      selected: this.props.selected
-    });
-
-    var notice = this.props.natspecuser && this.props.natspecuser.notice;
-    var displayNotice = () => {
-      return <span className="dev explainer"> { this.props.natspecuser.notice.slice(0,100) } </span>;
-    }
-    
-    return (
-      <div className={classes} onClick={this.props.onClick}>
-        <span className="name"> {this.props.name} </span>
-        { notice && displayNotice() }
-      </div>
-    );
-  }
-  
-});
 
 ABIView = React.createClass({
 

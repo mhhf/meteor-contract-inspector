@@ -48,21 +48,39 @@ Contract = React.createClass({
     return result;
   },
 
+  renderMainView () {
+    
+    if( this.state.selected == -1 ) {
+      return <div> Detailed Contract View </div>;
+    } else {
+      var abi = this.props.abi[ this.state.selected ];
+      var natspec = this.getnatspec( abi );
+      
+      return <ABIView key={this.state.selected} { ...abi } {...natspec} callContract = {this.callContract} />;
+    }
+  },
+
   render() {
     var abis = this.renderABI();
     
-    var abi = this.props.abi[ this.state.selected ];
-    var natspec = this.getnatspec( abi );
+    let boundClick = this.setSelected.bind( this, -1)
+    
+    var classes = React.addons.classSet({
+      selected: this.state.selected === -1,
+      contractInfo: true
+    });
     
     return (
     <div className="contractView">
-      <div className="contractStatus">{this.renderStatus()}</div>
       <div className="abiInspector">
         <div className="abiSelect">
+          <div key="-1" onClick = {boundClick} className={classes} >
+            { this.props.name } @{this.props.instance.address.slice(2,9)}
+          </div>
           {abis}
         </div>
         <div className="abiView">
-          <ABIView key={this.state.selected} { ...abi } {...natspec} callContract = {this.callContract} />
+          {this.renderMainView()}
         </div>
       </div>
     </div>
@@ -70,3 +88,26 @@ Contract = React.createClass({
   }
 });
 
+ABISelect = React.createClass({
+  
+  render () {
+    
+    var classes = React.addons.classSet({
+      abiSmall: true,
+      selected: this.props.selected
+    });
+
+    var notice = this.props.natspecuser && this.props.natspecuser.notice;
+    var displayNotice = () => {
+      return <span className="dev explainer"> { this.props.natspecuser.notice.slice(0,100) } </span>;
+    }
+    
+    return (
+      <div className={classes} onClick={this.props.onClick}>
+        <span className="name"> {this.props.name} </span>
+        { notice && displayNotice() }
+      </div>
+    );
+  }
+  
+});
