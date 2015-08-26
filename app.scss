@@ -17,15 +17,39 @@ $green: #67a029;
   font-family: 'Roboto', sans-serif;
   display: flex;
   flex: 1;
-  min-height: 400px;
+  height: 400px;
   position: fixed;
   width: 100%;
   bottom: -400px;
   transition: bottom 0.6s;
   
+  /// FONT
+
+  .explainer {
+    font-size: 12px;
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 300;
+    
+  }
+
+  
+  button {
+    border: 1px solid $dark;
+    background: $main1;
+    color: $white;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    margin: 10px 0;
+    padding: 8px 28px;
+    text-transform: uppercase;
+    float: right;
+  }
 
   fieldset { 
     border: 1px solid $main3; 
+    clear: both;
   } 
   
   &.active {

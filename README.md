@@ -1,6 +1,8 @@
 # Contract Inspector
 This package allows you to inspect and manipulate the state of your contracts in your browser.
 
+**NOTE:** This Package is under heavy development.
+
 ![](img.png)
 
 ## Installation

@@ -8,12 +8,26 @@ Contract = React.createClass({
     this.setState({ selected: i });
   },
 
+  getnatspec ( abi ) {
+    findText = ( o ) => {
+      return  o && o.methods &&
+        _.find( o.methods, ( v, k ) => {
+          return (new RegExp(`^${abi.name}`)).test(k);
+        });
+    };
+    var natspecuser = findText( this.props.natspecuser );
+    var natspecdev  = findText( this.props.natspecdev );
+    return { natspecuser, natspecdev };
+  },
+
   renderABI () {
     return this.props.abi
     .filter( (abi) => { return abi.type == 'function'; } )
     .map( ( abi, i ) => {
-      var boundClick = this.setSelected.bind( this, i)
-      return <ABISelect {...abi} onClick={ boundClick } key = {i} selected={i === this.state.selected} />;
+      let boundClick = this.setSelected.bind( this, i)
+      let natspec= this.getnatspec( abi );
+      
+      return <ABISelect {...abi} {...natspec} onClick={ boundClick } key = {i} selected={i === this.state.selected} />;
     });
   },
   
@@ -38,6 +52,7 @@ Contract = React.createClass({
     var abis = this.renderABI();
     
     var abi = this.props.abi[ this.state.selected ];
+    var natspec = this.getnatspec( abi );
     
     return (
     <div className="contractView">
@@ -47,7 +62,7 @@ Contract = React.createClass({
           {abis}
         </div>
         <div className="abiView">
-          <ABIView key={this.state.selected} { ...abi } callContract = {this.callContract} />
+          <ABIView key={this.state.selected} { ...abi } {...natspec} callContract = {this.callContract} />
         </div>
       </div>
     </div>

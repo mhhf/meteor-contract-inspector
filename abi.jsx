@@ -6,11 +6,16 @@ ABISelect = React.createClass({
       abiSmall: true,
       selected: this.props.selected
     });
+
+    var notice = this.props.natspecuser && this.props.natspecuser.notice;
+    var displayNotice = () => {
+      return <span className="dev explainer"> { this.props.natspecuser.notice.slice(0,100) } </span>;
+    }
     
     return (
       <div className={classes} onClick={this.props.onClick}>
         <span className="name"> {this.props.name} </span>
-        <span className="type"> {this.props.type} </span>
+        { notice && displayNotice() }
       </div>
     );
   }
@@ -28,8 +33,13 @@ ABIView = React.createClass({
   renderInputs () {
 
     var inputs = this.props.inputs.map( ( input, i ) => {
-return <tr key={i}><td><label> {input.name || input.type}</label></td><td> <input type="text" ref={i} /></td><td>::{input.type}</td></tr>;
+      var notice = this.props.natspecdev 
+      && this.props.natspecdev.params 
+      && this.props.natspecdev.params[ input.name ];
+
+      return <div><tr key={i}> <td> <label> {input.name || input.type}</label></td><td> <input type="text" ref={i} /> </td><td> ::{input.type} </td> </tr><tr><td colspan="3"><span className="explainer">{notice}</span></td></tr></div>;
     });
+
     
     if( inputs.length > 0 ) {
       return (
@@ -93,8 +103,17 @@ return <tr key={i}><td><label> {input.name || input.type}</label></td><td> <inp
   },
 
   render () {
+    var nsuser = this.props.natspecuser && this.props.natspecuser.notice;
+    var nsdev = this.props.natspecdev && this.props.natspecdev.details;
+
+    var displayNotice = ( notice ) => {
+      return <span className="explainer">{ notice }</span>;
+    }
+    
     return (
     <div>
+      { nsuser && displayNotice( nsuser ) }
+      { nsdev && displayNotice( nsdev ) }
       {this.renderInputs()}
       <button onClick = {this.callContract}> Call </button>
       {this.renderResult()}
