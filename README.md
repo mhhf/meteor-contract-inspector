@@ -58,6 +58,7 @@ Meteor.startup( function() {
     
     httpProvider: 'http://localhost:8545',
     
+    // setup freshly deployed contracts
     contractSetup: function ( cb ) {
       
       var coin = Contracts.Coin.instance;
@@ -65,11 +66,8 @@ Meteor.startup( function() {
         
         coin.send( "0xd858ba0fbd11e2c5491547b072b276458464f30", 12, function () {
           
-          var bal = coin.queryBalance( "0xd858ba0fbd11e2c5491547b072b276458464f30" );
-          
-          console.log( bal ); // should be 12
-          
-          cb && typeof cb === "function" && cb();
+          // initialize the inspector
+          cb();
           
         });
         
