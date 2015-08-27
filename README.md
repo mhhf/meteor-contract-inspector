@@ -1,7 +1,7 @@
 # Contract Inspector
-This package allows you to inspect and manipulate the state of your contracts in your browser.
+This package allows you to inspect and manipulate the state of a contracts in your browser.
 
-**NOTE:** This Package is under heavy development.
+**NOTE:** This Package is under heavy development and currently redeploys the contract on every run.
 
 ![](img.png)
 
@@ -20,13 +20,6 @@ Install this packages:
 meteor add napsy:solidity
 meteor add napsy:contract-inspector
 ```
-
-## Usage
-**Use this package only in development.**
-[]()
-
-if a contractSetup function is provided, the inspector will be initialized after,
-every contract has been set up and a callback is called:
 
 #### Example:
 Place the following Contract (`.sol`) anywhere in your project folder:
