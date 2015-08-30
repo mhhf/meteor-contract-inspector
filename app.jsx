@@ -17,8 +17,9 @@ Web3Inspector = React.createClass({
     });
   },
 
-  setContracts( contracts ) {
-    this.setState( { contracts } );
+  setContracts( o ) {
+    var newContracts = React.addons.update(this.state.contracts, o );
+    this.setState( { contracts: newContracts } );
   },
 
   render () {

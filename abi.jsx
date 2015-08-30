@@ -1,5 +1,8 @@
+var PureRenderMixin = React.addons.PureRenderMixin;
 
 ABIView = React.createClass({
+  
+  mixins: [PureRenderMixin],
 
   getInitialState () {
     
@@ -102,6 +105,8 @@ ABIView = React.createClass({
 
 
 ABISelect = React.createClass({
+  
+  mixins: [PureRenderMixin],
   
   render () {
     

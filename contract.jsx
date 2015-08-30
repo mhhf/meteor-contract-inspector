@@ -54,6 +54,12 @@ ContractInfoView = React.createClass({
   
   mixins: [PureRenderMixin],
 
+  getInitialState () {
+    return {
+      state: 0
+    };
+  },
+
   getInstances() {
     
     if( this.props.instances.length == 0 ) {
@@ -75,22 +81,54 @@ ContractInfoView = React.createClass({
     this.props.Class.new({ from: web3.eth.coinbase, data: this.props.binary }, (err, con) => {
       if( err ) throw new Error(err);
       if( !con.address ) return null;
-      console.log(this.props.name);
-      var newContracts = React.addons.update(Contracts, {
+      
+      this.props.setContracts( {
         [this.props.name]: {
           instances: {$unshift: [con]},
           instance: {$set: con}
         }
       });
-      this.props.setContracts( newContracts );
-    //   this.props.instances.unshift( con );
-    //   this.props.instance = con;
-    //   this.forceUpdate();
     });
   },
 
   onPoint () {
+    this.setState({state:1});
+  },
+  
+  onCancel() {
+    this.setState({state:0});
+  },
+
+  onOk () {
+    var addr = this.refs.address.getDOMNode().value;
+    var con = this.props.Class.at( addr );
     
+    this.props.setContracts({
+      [this.props.name]: {
+        instances: {$unshift: [con]},
+        instance: {$set: con}
+      }
+    });
+    
+    this.setState({state:0});
+  },
+  
+
+  renderNewActions() {
+    if( this.state.state == 0 ) {
+      return <div>
+          <button onClick={ this.onDeploy }>Deploy New</button>
+          <button onClick={ this.onPoint }>Point to Existing Address</button>
+        </div>;
+    } else {
+      return <div> 
+        <label for="">address: 
+          <input type="text" ref="address" />
+        </label>
+        <button onClick={this.onOk}>OK</button>
+        <button onClick={this.onCancel}>Cancel</button>
+      </div>;
+    }
   },
 
   render() {
@@ -104,10 +142,7 @@ ContractInfoView = React.createClass({
         
         <div className="label"> Instance </div>
         {this.getInstances()}
-        <div>
-          <button onClick={ this.onDeploy }>Deploy New</button>
-          <button onClick={ this.onPoint }>Point to Existing Address</button>
-        </div>
+        {this.renderNewActions()}
       </div>
     );
   }
