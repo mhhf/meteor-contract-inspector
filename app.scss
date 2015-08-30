@@ -15,8 +15,6 @@ $green: #67a029;
 
 #web3Inspector {
   font-family: 'Roboto', sans-serif;
-  display: flex;
-  flex: 1;
   height: 400px;
   position: fixed;
   width: 100%;
@@ -24,6 +22,11 @@ $green: #67a029;
   // refactor to bottom 0.6s, box-shadow 0.6s; if scss compiler allows it
   transition: all 0.6s;
   left: 0;
+  
+  .treeview {
+    display: flex;
+    flex: 1;
+  }
   
   /// FONT
 
@@ -33,7 +36,6 @@ $green: #67a029;
     padding-top: 10px;
     padding-bottom: 10px;
     font-weight: 300;
-    
   }
 
   
@@ -56,6 +58,11 @@ $green: #67a029;
     padding: 6px 10px;
   }
   
+  .center {
+    text-align: center;
+    display: block;
+  }
+
   &.active {
     bottom: 0px;
     -webkit-box-shadow: 0px -2px 13px -1px rgba(0,0,0,0.45);
@@ -74,7 +81,7 @@ $green: #67a029;
     flex-direction: column;
   }
   
-  .abiView {
+  .mainView.abi {
     flex: 4;
     padding: 15px;
     border-left: 1px solid $main3;
@@ -107,6 +114,7 @@ $green: #67a029;
   
   .abiInspector {
     flex: 8;
+    
   }
   .contractStatus {
     flex: 1;
@@ -130,11 +138,35 @@ $green: #67a029;
   }
   
   .navigation {
+    height: 400px;
+    overflow: scroll;
+    position: relative;
+  }
+  
+  .navigation.contract {
     background: $dark;
     color: $white;
     min-width: 10%;
-    position: relative;
-
+    width: 10%;
+    
+    .navBtn{
+      padding: 6px 15px;
+      font-size: 12px;
+      font-weight: 200;
+      letter-spacing: 1px;
+      background-color: $dark;
+      color: #fff;
+      &:hover {
+        background-color: $dark2;
+      }
+      
+      &.selected {
+        border-left: 4px solid $main1;
+        background: $dark2;
+      }
+    }
+    
+    
     .web3Settings {
       width: 100%;
       height: 30px;
@@ -145,63 +177,42 @@ $green: #67a029;
     .contractsNavigation {
       width: 100%;
     }
+  }
+  .navigation.abi {
+    width: 20%;
     
-    .navBtn {
+    > .navBtn {
+      // line-height: 32px;
+      font-weight: 100;
+      background: $white;
+      font-weight: 400;
+      position: relative;
       padding: 6px 15px;
-      font-size: 12px;
-      font-weight: 200;
-      letter-spacing: 1px;
+      
+      &.contractInfo {
+        font-size: 18px;
+        padding: 10px;
+        background: $dark;
+        color: $white;
+        letter-spacing: 1px;
+        &.selected {
+          border-left: 4px solid $main1;
+        }
+        &:hover, &.selected {
+          background: $dark2;
+        }
+        &:before { border-bottom: none; }
+      }
         
       &.selected {
         background: rgba($white, 0.1);
         border-left: 4px solid $main1;
       }
-    }
-  }
-  
-  .statusIcon {
-    width: 6px;
-    height: 6px;
-    border-radius: 3px;
-    background: #f00;
-    position: absolute;
-    right: 10px;
-    margin-top: 4px;
-    &.green {
-      background: $green;
-    }
-  }
-
-  .abiSelect {
-    flex: 1;
-    width: 20%;
-    height: 400px;
-    overflow: scroll;
-    
-    .contractInfo {
-      background-color: $dark;
-      color: #fff;
-      height: 32px;
-      font-size: 18px;
-      line-height: 32px;
-      font-weight: 100;
-      letter-spacing: 1px;
-      padding: 10px;
+      
       &:hover {
-        background-color: $dark2;
+        background: rgba($white, 0.1);
       }
       
-      &.selected {
-        border-left: 4px solid $main1;
-        background: $dark2;
-      }
-    }
-
-    .abiSmall {
-      background: $white;
-      padding: 10px;
-      font-weight: 400;
-      position: relative;
       &:before {
         content: " ";
         border-bottom: 1px solid $main3;
@@ -220,5 +231,19 @@ $green: #67a029;
       }
     }
   }
+  
+  .statusIcon {
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    background: #f00;
+    position: absolute;
+    right: 10px;
+    margin-top: 4px;
+    &.green {
+      background: $green;
+    }
+  }
+
 
 }

@@ -20,6 +20,7 @@ Package.onUse(function(api) {
 
   api.addFiles('abi.jsx', ['client']);
   api.addFiles('app.jsx', ['client']);
+  api.addFiles('treeview.jsx', ['client']);
   api.addFiles('contract.jsx', ['client']);
   api.addFiles('web3.jsx', ['client']);
   api.addFiles('app.scss', ['client']);

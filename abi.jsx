@@ -99,3 +99,23 @@ ABIView = React.createClass({
   }
   
 });
+
+
+ABISelect = React.createClass({
+  
+  render () {
+    
+    var notice = this.props.natspecuser && this.props.natspecuser.notice;
+    var displayNotice = () => {
+      return <span className="dev explainer"> { this.props.natspecuser.notice.slice(0,100) } </span>;
+    }
+    
+    return (
+      <div>
+        <span className="name"> {this.props.name} </span>
+        { notice && displayNotice() }
+      </div>
+    );
+  }
+  
+});

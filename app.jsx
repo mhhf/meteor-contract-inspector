@@ -2,44 +2,8 @@ Web3Inspector = React.createClass({
 
   getInitialState () {
     return { 
-      selected: _.keys(Contracts)[0],
       active: false
     };
-  },
-
-  changeSelected ( key ) {
-    this.setState( { selected: key } );
-  },
-
-  renderContracts () {
-    
-    return _.map(Contracts, ( v, k ) => {
-      var classes = React.addons.classSet({
-        navBtn: true,
-        selected: this.state.selected === k
-      });
-
-      var status = React.addons.classSet({
-        statusIcon: true,
-        green: typeof v.instance == "object"
-      });
-
-      var boundClick = this.changeSelected.bind( this, k );
-      return <div className={classes} onClick={ boundClick }> { k } 
-        <span className={status}></span>
-        </div>;
-    });
-    
-  },
-
-  renderMainView () {
-    if( this.state.selected === "web3" ) {
-      return null;
-    } else {
-      var contract = Contracts[this.state.selected];
-      if ( contract == null ) throw Error("no contract under this name found");
-      return <Contract key={this.state.selected} {...contract} name={this.state.selected} />;
-    }
   },
 
   toggle () {
@@ -49,35 +13,23 @@ Web3Inspector = React.createClass({
   },
 
   render () {
-    var boundClick = this.changeSelected.bind( this, "web3" );
-    var classes = React.addons.classSet({
-      navBtn: true,
-      selected: this.state.selected === "web3"
-    });
-
     var mainClasses = React.addons.classSet({
       active: this.state.active
     });
 
-    return (
-      <div id="web3Inspector" className={mainClasses} >
-        <div className="activeToggle" onClick={this.toggle}>
-        </div>
-        <div className="navigation">
-          <div className="contractsNavigation">
-            { this.renderContracts() }
-          </div>
-          <div className="web3Settings">
-            <div className={ classes } onClick={ boundClick }>
-              web3
-            </div>
-          </div>
-        </div>
-        <div className="mainView">
-          {this.renderMainView()}
-        </div>
-      </div>
-    );
+    var children = _.map(Contracts, ( v, k ) => {
+      return {
+        nav: ContractNavigationView,
+        main: Contract,
+        object: { name: k, ...v },
+        class: "contract"
+      };
+    });
+
+    return <div id="web3Inspector" className={mainClasses} >
+        <div className="activeToggle" onClick={this.toggle}></div>
+        <TreeView className={mainClasses} children={children} class="contract" {...this.props} />
+      </div>;
   }
 });
 
@@ -93,11 +45,28 @@ ContractInspector = {
       $('body').append('<div id="web3Inspector-wrapper"></div>');
       React.render(<Web3Inspector />, document.getElementById("web3Inspector-wrapper"));
     }
-
+    
+    
     // TODO - refactor this
     var rdyCounter = 0;
+
+    var toDeploy = _.pick(Contracts, _.pluck( _.filter(options.contracts, function(c){
+      return c.deploy;
+    }),'name'));
     
-    _.each(Contracts, ( Contract, name ) => {
+    var toWhisk = _.pick(Contracts, _.pluck( _.filter(options.contracts, function(c){
+      return typeof c.address === 'string';
+    }),'name'));
+
+    _.each( toWhisk, (Contract, name) => {
+      var C = web3.eth.contract( Contract.abi );
+      var c = C.at( _.find(options.contracts, (c) => { return c.name == name; }).address );
+      Contract.instance = c;
+    });
+
+    
+    // Deploy Contracts
+    _.each( toDeploy, ( Contract, name ) => {
     
       var C = web3.eth.contract( Contract.abi );
       c = C.new( {from: web3.eth.coinbase, data: Contract.binary }, function( err, con ){
@@ -106,7 +75,7 @@ ContractInspector = {
         Contract.instance = con;
         
         // Render after every contract has been initialized
-        if ( ++rdyCounter == _.keys(Contracts).length ) {
+        if ( ++rdyCounter == _.keys( toDeploy ).length ) {
           if ( options.contractSetup && typeof options.contractSetup === "function" ) {
             options.contractSetup ( () => {
               initContractInspector();
@@ -118,5 +87,6 @@ ContractInspector = {
         
       });
     });
+
   }
 }
