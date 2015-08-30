@@ -1,5 +1,9 @@
+var PureRenderMixin = React.addons.PureRenderMixin;
+
 TreeView = React.createClass({
 
+  mixins: [PureRenderMixin],
+  
   propTypes: {
     selected: React.PropTypes.number,
     children: React.PropTypes.array
@@ -36,7 +40,7 @@ TreeView = React.createClass({
       var boundClick = this.changeSelected.bind( this, i );
       var CClass = child.nav;
 
-      return <div className={classes} onClick={ boundClick } >
+      return <div className={classes} onClick={ boundClick } key={i} >
         <CClass {...child.object} />
       </div>;
     });
@@ -45,19 +49,19 @@ TreeView = React.createClass({
 
   
   renderMainView () {
-    if( this.state.selected === "web3" ) {
-      return null;
-    } else if( this.state.selected === "new" ) {
-      return null;
-    } else {
-      
-      var contract = Contracts[this.state.selected];
+    var contract = Contracts[this.state.selected];
 
-      let obj = this.props.children[this.state.selected];
-      let ViewClass = obj.main;
+    let obj = this.props.children[this.state.selected];
+    let ViewClass = obj.main;
+    
+    var mainClasses = React.addons.classSet({
+      mainView: true,
+      [ obj.class ]: true
+    });
 
-      return <ViewClass key={this.state.selected} {...obj.object} />;
-    }
+    return <div className={mainClasses}>
+      <ViewClass key={this.state.selected} {...obj.object} />
+    </div>;
   },
 
   render () {
@@ -69,19 +73,12 @@ TreeView = React.createClass({
       [ this.props.class ]: true
     });
     
-    var mainClasses = React.addons.classSet({
-      mainView: true,
-      [ this.props.class ]: true
-    });
-
     return (
       <div className="treeview">
         <div className={navClasses}>
           { this.renderNavigation() }
         </div>
-        <div className={mainClasses}>
-          {this.renderMainView()}
-        </div>
+        {this.renderMainView()}
       </div>
     );
   }

@@ -1,8 +1,13 @@
+var PureRenderMixin = React.addons.PureRenderMixin;
+
 Web3Inspector = React.createClass({
+  
+  mixins: [PureRenderMixin],
 
   getInitialState () {
     return { 
-      active: false
+      active: false,
+      contracts: Contracts
     };
   },
 
@@ -12,16 +17,20 @@ Web3Inspector = React.createClass({
     });
   },
 
+  setContracts( contracts ) {
+    this.setState( { contracts } );
+  },
+
   render () {
     var mainClasses = React.addons.classSet({
       active: this.state.active
     });
 
-    var children = _.map(Contracts, ( v, k ) => {
+    var children = _.map(this.state.contracts, ( v, k ) => {
       return {
         nav: ContractNavigationView,
         main: Contract,
-        object: { name: k, ...v },
+        object: { name: k, ...v, setContracts:this.setContracts },
         class: "contract"
       };
     });
@@ -34,6 +43,8 @@ Web3Inspector = React.createClass({
 });
 
 ContractInspector = {
+  
+  // TODO - cleanup this mess
   init ( options ) {
     
     web3.setProvider( new web3.providers.HttpProvider( options.httpProvider ) );
@@ -41,10 +52,18 @@ ContractInspector = {
     // web3.currentProvider.send({jsonrpc: "2.0", method: "evm_reset", params: [], id: 1});
     web3.eth.defaultAccount = web3.eth.coinbase;
 
-    var initContractInspector = function() {
+    var initContractInspector = function( contracts ) {
       $('body').append('<div id="web3Inspector-wrapper"></div>');
-      React.render(<Web3Inspector />, document.getElementById("web3Inspector-wrapper"));
+      React.render(<Web3Inspector contracts={contracts} />, document.getElementById("web3Inspector-wrapper"));
     }
+    
+    _.each(Contracts, ( con ) => {
+      
+      let C = web3.eth.contract( con.abi );
+      con.Class = C;
+      con.instances = [];
+      
+    });
     
     
     // TODO - refactor this
@@ -58,30 +77,30 @@ ContractInspector = {
       return typeof c.address === 'string';
     }),'name'));
 
+    // Instanceate 
     _.each( toWhisk, (Contract, name) => {
-      var C = web3.eth.contract( Contract.abi );
-      var c = C.at( _.find(options.contracts, (c) => { return c.name == name; }).address );
+      var c = Contract.Class.at( _.find(options.contracts, (c) => { return c.name == name; }).address );
       Contract.instance = c;
+      Contract.instances.push(c);
     });
-
     
     // Deploy Contracts
     _.each( toDeploy, ( Contract, name ) => {
     
-      var C = web3.eth.contract( Contract.abi );
-      c = C.new( {from: web3.eth.coinbase, data: Contract.binary }, function( err, con ){
+      c = Contract.Class.new( {from: web3.eth.coinbase, data: Contract.binary }, function( err, con ){
         if( err ) throw new Error(err);
         if( !con.address ) return null;
         Contract.instance = con;
+        Contract.instances.push( con );
         
         // Render after every contract has been initialized
         if ( ++rdyCounter == _.keys( toDeploy ).length ) {
           if ( options.contractSetup && typeof options.contractSetup === "function" ) {
             options.contractSetup ( () => {
-              initContractInspector();
+              initContractInspector( Contracts );
             });
           } else {
-            initContractInspector();
+            initContractInspector( Contracts );
           }
         }
         
@@ -90,3 +109,22 @@ ContractInspector = {
 
   }
 }
+
+ContractNavigationView = React.createClass({
+  
+  mixins: [PureRenderMixin],
+
+  render() {
+
+    var status = React.addons.classSet({
+      statusIcon: true,
+      green: typeof this.props.instance == "object"
+    });
+    
+    return (
+      <div> { this.props.name } 
+        <span className={status}></span>
+      </div>
+    );
+  }
+});

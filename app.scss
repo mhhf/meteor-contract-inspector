@@ -48,6 +48,9 @@ $green: #67a029;
     margin: 10px 0;
     padding: 8px 28px;
     text-transform: uppercase;
+    &+ button {
+      margin-left: 10px;
+    }
   }
 
   fieldset { 
@@ -81,7 +84,7 @@ $green: #67a029;
     flex-direction: column;
   }
   
-  .mainView.abi {
+  .mainView.abi, .mainView.contractInfo {
     flex: 4;
     padding: 15px;
     border-left: 1px solid $main3;
@@ -228,6 +231,31 @@ $green: #67a029;
       &.selected {
         border-left: 4px solid $main1;
         background: $main3;
+      }
+    }
+  }
+  
+  .mainView.contractInfo {
+    .label {
+      font-size: 16px;
+      margin-top: 36px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .meta-info {
+      margin-bottom: 10px;
+      .name {
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .title {
+        margin-top: 8px;
+        display: block;
+      }
+      .author {
+        font-size: 12px;
+        line-height: 24px;
+        font-weight: 300;
       }
     }
   }
