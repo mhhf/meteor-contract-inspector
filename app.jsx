@@ -107,6 +107,9 @@ ContractInspector = {
         
       });
     });
+      
+    if( _.keys(toDeploy).length == 0 ) 
+      initContractInspector( Contracts );
 
   }
 }
